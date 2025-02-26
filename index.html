@@ -603,41 +603,48 @@
     }
     
     // Add click event listeners to all contact buttons
-    document.getElementById('emergency-contact').addEventListener('click', redirectToWhatsApp);
-    document.getElementById('nav-contact').addEventListener('click', redirectToWhatsApp);
-    document.getElementById('hero-quote').addEventListener('click', redirectToWhatsApp);
-    document.getElementById('card-contact').addEventListener('click', redirectToWhatsApp);
-    document.getElementById('footer-contact').addEventListener('click', redirectToWhatsApp);
+    function addClickListener(id) {
+      const element = document.getElementById(id);
+      if (element) {
+        element.addEventListener('click', redirectToWhatsApp);
+      }
+    }
+    
+    // Add listeners to all contact buttons
+    ['emergency-contact', 'nav-contact', 'hero-quote', 'card-contact', 'footer-contact'].forEach(addClickListener);
     
     // Animation for service cards on scroll
     const serviceCards = document.querySelectorAll('.service-card');
     
-    // Simple animation on scroll function
-    function animateOnScroll() {
-      serviceCards.forEach((card, index) => {
-        const rect = card.getBoundingClientRect();
-        const isVisible = rect.top < window.innerHeight - 100;
-        
-        if (isVisible) {
-          setTimeout(() => {
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-          }, index * 150);
-        }
+    // Only run animation code if there are service cards
+    if (serviceCards.length > 0) {
+      // Simple animation on scroll function
+      function animateOnScroll() {
+        serviceCards.forEach((card, index) => {
+          const rect = card.getBoundingClientRect();
+          const isVisible = rect.top < window.innerHeight - 100;
+          
+          if (isVisible) {
+            setTimeout(() => {
+              card.style.opacity = '1';
+              card.style.transform = 'translateY(0)';
+            }, index * 150);
+          }
+        });
+      }
+      
+      // Initialize service cards for animation
+      serviceCards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
       });
+      
+      // Listen for scroll events
+      window.addEventListener('scroll', animateOnScroll);
+      // Initial check on page load
+      window.addEventListener('load', animateOnScroll);
     }
-    
-    // Initialize service cards for animation
-    serviceCards.forEach(card => {
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(20px)';
-      card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-    });
-    
-    // Listen for scroll events
-    window.addEventListener('scroll', animateOnScroll);
-    // Initial check on page load
-    window.addEventListener('load', animateOnScroll);
   </script>
 </body>
 </html>
